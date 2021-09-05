@@ -1,0 +1,102 @@
+.editor {
+    width: 100%;
+    height: 100%;
+    &_left,
+    &_right {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 270px;
+    }
+    &_left {
+        left: 0;
+        &_item {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            width: 250px;
+            min-height: 100px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            cursor: move;
+            user-select: none;
+            > span {
+                position: absolute;
+                top: 0;
+                left: 0;
+                padding: 4px;
+                color: #fff;
+                background: rgb(96, 205, 224);
+            }
+            &::after {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                background: #ccc;
+                opacity: 0.2;
+                content: '';
+            }
+        }
+    }
+    &_right {
+        right: 0;
+    }
+    &_top {
+        position: absolute;
+        right: 280px;
+        left: 280px;
+        height: 80px;
+        border: 1px solid blue;
+    }
+    &_container {
+        box-sizing: border-box;
+        height: 100%;
+        padding: 80px 270px 0;
+
+        &_canvas {
+            height: 100%;
+            overflow: scroll;
+            &_content {
+                position: relative;
+                margin: 20px auto;
+                background-color: #ccc;
+            }
+        }
+    }
+}
+.editor_block {
+    position: absolute;
+    &::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        content: '';
+    }
+}
+.editor_block_focus {
+    &::after {
+        border: 2px dashed #1890ff;
+    }
+}
+
+// 移动left值
+.line-x {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    border-left: 1px dashed #1890ff;
+}
+// 移动的是top 值
+.line-y {
+    position: absolute;
+    right: 0;
+    left: 0;
+    border-top: 1px dashed #1890ff;
+}
