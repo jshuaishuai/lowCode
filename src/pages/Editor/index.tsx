@@ -1,8 +1,10 @@
 import { useRef } from 'react';
+import { Button } from 'antd';
 import { data, config } from '@/store';
 import EditorBlock from './EditorBlock';
 import useMenuDrag from './useMenuDragger';
 import { useLocalObservable, Observer } from 'mobx-react-lite';
+import useCommand from './useCommand';
 import './style.less';
 
 const Editor = () => {
@@ -17,6 +19,23 @@ const Editor = () => {
     const containerMouseDown = () => {
         localData.clearBlockFocus();
     };
+    const { command } = useCommand(localData);
+    console.log(command);
+
+    const buttons = [
+        {
+            label: '撤销',
+            handler: () => {
+                if (command.undo) command.undo();
+            },
+        },
+        {
+            label: '重做',
+            handler: () => {
+                if (command.redo) command.redo();
+            },
+        },
+    ];
 
     return (
         <Observer>
@@ -38,7 +57,13 @@ const Editor = () => {
                         ))}
                     </div>
                     {/* 撤销 重做  图层置顶 导入jsonScheme 导导出jsonScheme */}
-                    <div className="editor_top">菜单栏</div>
+                    <div className="editor_top">
+                        {buttons.map((btn, index) => (
+                            <div className="editor_top_button" onClick={btn.handler} key={index}>
+                                <Button type="primary">{btn.label}</Button>
+                            </div>
+                        ))}
+                    </div>
                     <div className="editor_right">属性控制栏</div>
                     <div className="editor_container">
                         {/* 负责产生滚动条 */}
@@ -51,14 +76,9 @@ const Editor = () => {
                                 onMouseDown={containerMouseDown}
                             >
                                 {localData.blocks.map((block, index: number) => (
-                                    <EditorBlock
-                                        key={block.id}
-                                        focus={block.focus}
-                                        block={block}
-                                        index={index}
-                                        // onMouseDown={(e) => blockMouseDown(e, block)}
-                                    />
+                                    <EditorBlock key={block.id} block={block} index={index} />
                                 ))}
+                                {/* 感应线 */}
                                 {localData.markLine.x !== null && (
                                     <div
                                         className="line-x"

@@ -1,4 +1,5 @@
 import type { Block } from '@/store/data';
+import { events } from './events';
 
 type DragState = {
     startX: number;
@@ -16,10 +17,14 @@ const useBlockDragger = (localData: any, lastSelectBlock: Block) => {
         startX: 0,
         startY: 0,
         startPos: [],
+        dragging: false, // 默认不是正在拖拽
     };
     const mouseMove = (e: any) => {
         let { clientX, clientY } = e;
-
+        if (!dragState.dragging) {
+            dragState.dragging = true;
+            events.emit('start'); // 触发事件就会记住拖拽前的位置
+        }
         // 计算当前元素最新的left和top 去线里面找，找到显示线
         // 鼠标移动后 - 鼠标移动前 + left就好了
         const left = clientX - dragState.startX + dragState.startLeft;
@@ -64,6 +69,10 @@ const useBlockDragger = (localData: any, lastSelectBlock: Block) => {
         document.removeEventListener('mouseup', mouseUp);
         localData.markLine.x = null;
         localData.markLine.y = null;
+        if (dragState.dragging) {
+            // 如果只是点击就不会触发
+            events.emit('end');
+        }
     };
 
     const mouseDown = (e: any) => {
@@ -74,6 +83,7 @@ const useBlockDragger = (localData: any, lastSelectBlock: Block) => {
         dragState = {
             startX: e.clientX,
             startY: e.clientY,
+            dragging: false,
             startLeft: lastSelectBlock.left, // b点拖拽前的位置 left和top
             startTop: lastSelectBlock.top,
             startPos: localData.focusData.focus.map(({ top, left }) => ({ top, left })),

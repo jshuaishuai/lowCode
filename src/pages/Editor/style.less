@@ -50,8 +50,15 @@
         position: absolute;
         right: 280px;
         left: 280px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         height: 80px;
-        border: 1px solid blue;
+        &_button {
+            & + & {
+                margin-left: 10px;
+            }
+        }
     }
     &_container {
         box-sizing: border-box;

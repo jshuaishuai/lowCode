@@ -21,7 +21,7 @@ class Data {
         x: null,
         y: null,
     };
-    focus: Block[] = [];
+    // focus: Block[] = [];
     blocks: Block[] = [
         { top: 100, left: 100, zIndex: 1, key: 'text', id: uuidv4() },
         { top: 200, left: 200, zIndex: 1, key: 'button', id: uuidv4() },

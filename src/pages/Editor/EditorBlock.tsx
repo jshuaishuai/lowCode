@@ -8,10 +8,9 @@ import useBlockDragger from './useBlockDragger';
 interface Props {
     block: Record<string, any>;
     index: number;
-    focus: boolean | undefined;
 }
 const EditorBlock: FC<Props> = (props) => {
-    const { block, focus, index } = props;
+    const { block, index } = props;
     const blockRef = useRef<HTMLDivElement>(null);
     const localData = useLocalObservable(() => data);
     const localConfig = useLocalObservable(() => config);
@@ -61,7 +60,7 @@ const EditorBlock: FC<Props> = (props) => {
     return (
         <div
             ref={blockRef}
-            className={classNames('editor_block', { editor_block_focus: focus })}
+            className={classNames('editor_block', { editor_block_focus: block.focus })}
             style={blockStyles}
             onMouseDown={blockMouseDown}
         >

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { events } from './events';
 
 const useMenuDrag = (containerRef: any, localData: any) => {
     let currentComponent: any = null;
@@ -34,15 +35,17 @@ const useMenuDrag = (containerRef: any, localData: any) => {
         containerRef.current.addEventListener('dragleave', dragleave);
         containerRef.current.addEventListener('drop', drop);
         currentComponent = component;
+        events.emit('start'); // 发布start
     };
 
     const dragend = () => {
         if (!containerRef.current) return;
-
         containerRef.current.removeEventListener('dragenter', dragenter);
         containerRef.current.removeEventListener('dragover', dragover);
         containerRef.current.removeEventListener('dragleave', dragleave);
         containerRef.current.removeEventListener('drop', drop);
+        currentComponent = null;
+        events.emit('end'); // 发布end
     };
 
     return {
