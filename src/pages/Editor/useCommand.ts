@@ -79,7 +79,7 @@ const useCommand = (localData: any) => {
         execute() {
             return {
                 redo() {
-                    if (state.current == -1) return; // 没有可以撤销的了
+                    if (state.current === -1) return; // 没有可以撤销的了
                     const item = state.queue[state.current]; // 找到上一步还原
                     if (item && item.undo) {
                         item.undo(); // 这里没有操作队列
